@@ -1,0 +1,4 @@
+pyobjc
+playsound
+lxml
+requests
