@@ -13,7 +13,6 @@ url = 'https://www.yodel.co.uk/tracking'
 # Basic tracking number validation
 while True:
     tracker = input('Please enter a tracking number : ')
-#    tracker = 'JD0002218204292880'
     if len(tracker) != 18 or tracker[:2] != 'JD':
         print('Please provide correct tracking number, JDXXXXXXXXXXXXXXXX')
     else:
