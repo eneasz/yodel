@@ -23,6 +23,7 @@ while True:
 #  - Yodel has parcel
 #  - Parcel is out for delivery
 
+
 page = requests.get('{0}/{1}'.format(url, tracker))
 tree = html.fromstring(page.content)
 
@@ -40,11 +41,13 @@ if not with_courier_status:
     exit(0)
 else:
     courier_date = tree.xpath('//*[@id="courier-box"]/p/span/text()')
-    print('{0:55}:{1}'.format(with_courier_status[0], courier_date[0]))
+    print('{0:55}:{1}\n'.format(with_courier_status[0], courier_date[0]))
 
 # Checking if  parcel is out for delivery and  starting tracking if so
-number = tree.xpath('//*[@id="courier-box"]/div/div/h4/text()')
 while True:
+    page = requests.get('{0}/{1}'.format(url, tracker))
+    tree = html.fromstring(page.content)
+    number = tree.xpath('//*[@id="courier-box"]/div/div/h4/text()')
     if number:
         now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         print('{0} - There are {1} deliveries before {2}'.format(now, number[0], tracker))
