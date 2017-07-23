@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+"""TODO: Handle situation where parcel is in state saying contact driver"""
 
 import requests
 from lxml import html
@@ -55,12 +56,17 @@ while True:
 
     else:
         try:
-            delivered_at = tree.xpath('/html/body/section[1]/div/ol/li[4]/div[2]/p/span/text()')[0]
+            rearrange = tree.xpath('/html/body/section[1]/div/ol/li[4]/div[2]/p/a/text()')[0]
+            if rearrange == 'Rearrange':
+                print('You missed your parcel, please rearrange delivery with Yodel {}'.format(rearrange))
+                exit(0)
+            elif rearrange == 'HAVE YOUR SAY':
+                delivered_at = tree.xpath('/html/body/section[1]/div/ol/li[4]/div[2]/p/span/text()')[0]
+                print('\tDelivered at' + ' ' * 39 + ':{0}'.format(delivered_at))
+                exit(0)
         except IndexError:
-            print('Unable to obtain delivery time details')
-            exit(0)
-        print('Delivered at' + ' '*43 + ':{0}'.format(delivered_at))
-        playsound(sound_incoming)
-        exit(0)
+            contact = tree.xpath('//*[@id="courier_details"]/a/test()')
+            print('There was a problem with your parcel details, try later {}'.format(contact))
+
 
     time.sleep(120)
